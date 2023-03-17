@@ -1,1 +1,0 @@
-Las funciones mas importantes son las de dup2, fork y pipe aparte tambien de la de execv
