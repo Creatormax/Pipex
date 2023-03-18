@@ -6,7 +6,7 @@
 /*   By: hmorales <hmorales@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 09:34:28 by hmorales          #+#    #+#             */
-/*   Updated: 2023/03/17 16:15:09 by hmorales         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:45:03 by hmorales         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "libft/libft.h"
+
+char	*pathfinder(char *str, char **envp);
 
 # endif
