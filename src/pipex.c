@@ -6,7 +6,7 @@
 /*   By: hmorales <hmorales@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 09:34:36 by hmorales          #+#    #+#             */
-/*   Updated: 2023/03/31 15:17:28 by hmorales         ###   ########.fr       */
+/*   Updated: 2023/03/31 17:58:32 by hmorales         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,38 @@ void	pipex(char **argv, char **envp, int *fd1, int *i)
 
 	fd2 = malloc(2 * sizeof(int) + 1);
 	ft_bzero(fd2, 2);
-	if (argv[*i + 2])
+	if (argv[*i + 1] != NULL )
 	{
 		pipe(fd1);
 		pid = fork();
 		if (pid == 0)
 		{
-			dup2(fd1[0], STDIN_FILENO);
 			close(fd1[0]);
-			dup2(fd2[1], STDOUT_FILENO);
-			close(fd2[1]);
-			execve(pathfinder(argv[*i], envp), argv, envp);
-			
+			dup2(fd1[1], STDOUT_FILENO); 
+			close(fd1[1]);
+			execve(pathfinder(argv[*i], envp), &argv[*i], envp);
 		}
 		else
 		{
 			close(fd1[1]);
-			close(fd2[0]);
-			*i = *i + 1;
-			//pipex(argv, envp, fd2, &(*i));
+			*i = *i + 2;
+			pipe(fd2);
+			pid = fork();
+			if (pid == 0)
+			{
+				close(fd2[0]);
+				dup2(fd1[0], STDIN_FILENO);
+				close(fd1[0]);
+				dup2(fd2[1], STDOUT_FILENO);
+				close(fd2[1]);
+				execve(pathfinder(argv[*i], envp), &argv[*i], envp);
+			}
+			else
+			{
+				close(fd1[0]);
+				close(fd2[1]);
+				//pipex(argv, envp, fd2, &(*i));
+			}
 		}
 		free(fd2);
 		wait(&status);
@@ -76,7 +89,7 @@ int	main(int argc, char **argv, char **envp)
 	int	*fd;
 	int	i;
 
-	i = 2;
+	i = 1;
 	if (argc <= 4)
 		ft_errormsg("Number of arguments is invalid\n");
 	arg_checker(argv, argc);
