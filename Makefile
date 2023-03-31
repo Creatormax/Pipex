@@ -4,7 +4,7 @@ SRCS	=	src/pipex.c \
 			tools/tools.c \
 			
 
-FLAGS	=	-Wall -Wextra -Werror -g3 #-fsanitize=address -O0
+FLAGS	=	-Wall -Wextra -Werror -g3 -fsanitize=address -O0
 
 OBJS	=	$(SRCS:.c=.o)
 
